@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@daohaus/ui": "^0.0.14",
+    "@daohaus/ui": "file: ../../../../daohaus-monorepo/dist/libs/ui",
+    "@daohaus/daohaus-connect-feature": "file: ../../../../daohaus-monorepo/dist/libs/daohaus-connect-feature",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "ws": "^8.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.15",
