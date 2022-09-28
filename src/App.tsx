@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   OuterLayout,
   widthQuery,
+  Card,
   ParMd,
   Button,
   H1,
@@ -9,6 +10,7 @@ import {
   useBreakpoint,
   SingleColumnLayout,
   AddressDisplay,
+  H3,
 } from '@daohaus/ui';
 import {
   ConnectButton,
@@ -28,7 +30,7 @@ import {
 function App() {
   // const { address } = useHausConnect();
 
-  const address = '0x0B5f5a722Ac5E8EcEDf4da39A656fe5f1e76b34C';
+  // const address = ''; // include a tester address here
 
   const [loading, setLoading] = useState(true);
   const [daoData, setDaoData] = useState<ITransformedMembership[]>([]);
@@ -56,7 +58,7 @@ function App() {
           includeTokens: false,
           // TODO: add delegate filter
         });
-        console.log('query ', query);
+        console.log('member daos', query?.data?.daos);
         if (query.data?.daos && shouldUpdate) {
           setDaoData(query.data.daos);
         }
@@ -78,8 +80,6 @@ function App() {
     };
   }, [address, filterNetworks]);
 
-  const isSm = useBreakpoint(widthQuery.sm);
-
   return (
     <div className="App">
       <OuterLayout>
@@ -91,6 +91,17 @@ function App() {
           <Button>Primary Button</Button>
           <Button secondary>Secondary Button</Button>
           <Button tertiary>Tertiary Button</Button>
+          <>
+            {daoData && daoData.length !== 0 && (
+              <>
+                {daoData.map((dao) => (
+                  <Card>
+                    <H3>{dao.name}</H3>
+                  </Card>
+                ))}
+              </>
+            )}
+          </>
         </SingleColumnLayout>
       </OuterLayout>
     </div>

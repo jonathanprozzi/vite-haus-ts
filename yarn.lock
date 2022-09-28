@@ -309,6 +309,9 @@
     vite "^2.8.3"
     web3modal "^1.9.7"
 
+"@daohaus/form-builder@file:../../daohaus-monorepo/dist/libs/form-builder":
+  version "0.0.2"
+
 "@daohaus/ui@0.0.17":
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/@daohaus/ui/-/ui-0.0.17.tgz#8dd7169db79b30517114555570db4cf6f525bd3c"
