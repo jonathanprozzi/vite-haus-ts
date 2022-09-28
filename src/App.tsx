@@ -1,19 +1,42 @@
 import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
-import './App.css';
-import { useBreakpoint, widthQuery, ParMd, Button, H1, H2 } from '@daohaus/ui';
-import { DaoHausNav, useHausConnect } from '@daohaus/daohaus-connect-feature';
+import {
+  useBreakpoint,
+  widthQuery,
+  ParMd,
+  Button,
+  H1,
+  H2,
+  SingleColumnLayout,
+  Footer,
+  DataMd,
+} from '@daohaus/ui';
+import {
+  DaoHausNav,
+  HausLayout,
+  useHausConnect,
+} from '@daohaus/daohaus-connect-feature';
 import { Haus, ITransformedMembership } from '@daohaus/dao-data';
 import {
   ENDPOINTS,
   networkData,
   ValidNetwork,
 } from '@daohaus/common-utilities';
+import { TXBuilder } from '@daohaus/tx-builder-feature';
+import Web3 from 'web3';
+import FormTest from './FormTest';
 
 function App() {
-  // const { address } = useHausConnect();
-  const address = import.meta.env.VITE_TEST_ADDRESS;
+  // const { address, provider } = useHausConnect();
+  const address = '0x83aB8e31df35AA3281d630529C6F4bf5AC7f7aBF';
   console.log('address', address);
+
+  // const provider = ethers
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(
+      'https://787b6618b5a34070874c12d7157e6661.goerli.rpc.rivet.cloud'
+    )
+  );
 
   const [loading, setLoading] = useState(true);
   const [daoData, setDaoData] = useState<ITransformedMembership[]>([]);
@@ -39,7 +62,6 @@ function App() {
           memberAddress: address,
           networkIds: Object.keys(filterNetworks) as ValidNetwork[],
           includeTokens: false,
-          // TODO: add delegate filter
         });
 
         if (query.data?.daos && shouldUpdate) {
@@ -72,22 +94,27 @@ function App() {
   console.log('haus', haus);
 
   console.log('dao data', daoData);
+
+  if (!web3?.currentProvider) {
+    return null;
+  }
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <H1>Vite Starter</H1>
-      {/* <DaoHausNav /> */}
-      <H2>Sub Heading</H2>
-      <ParMd>Testing this out</ParMd>
-      <Button>Click me</Button>
-    </div>
+    <TXBuilder provider={web3.givenProvider} chainId="0x5" appState={{}}>
+      <SingleColumnLayout>
+        <>
+          {/* <DaoHausNav /> */}
+          <H2>Sub Heading</H2>
+          <ParMd>Testing this out</ParMd>
+          <Button>Click me</Button>
+          {daoData &&
+            daoData.map((dao) => {
+              return <DataMd key={dao.dao}>{dao.name}</DataMd>;
+            })}
+        </>
+        <FormTest />
+      </SingleColumnLayout>
+      <Footer />
+    </TXBuilder>
   );
 }
 
