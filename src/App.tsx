@@ -1,8 +1,23 @@
 import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
-import { useBreakpoint, widthQuery, ParMd, Button, H1, H2 } from '@daohaus/ui';
-import { DaoHausNav, useHausConnect } from '@daohaus/daohaus-connect-feature';
+import {
+  OuterLayout,
+  widthQuery,
+  ParMd,
+  Button,
+  H1,
+  H2,
+  useBreakpoint,
+  SingleColumnLayout,
+  AddressDisplay,
+} from '@daohaus/ui';
+import {
+  ConnectButton,
+  NetworkButton,
+  DaoHausNav,
+  useHausConnect,
+  HausLayout,
+  ExplorerLink,
+} from '@daohaus/daohaus-connect-feature';
 import { Haus, ITransformedMembership } from '@daohaus/dao-data';
 import {
   ENDPOINTS,
@@ -12,8 +27,8 @@ import {
 
 function App() {
   // const { address } = useHausConnect();
-  const address = import.meta.env.VITE_TEST_ADDRESS;
-  console.log('address', address);
+
+  const address = '0x0B5f5a722Ac5E8EcEDf4da39A656fe5f1e76b34C';
 
   const [loading, setLoading] = useState(true);
   const [daoData, setDaoData] = useState<ITransformedMembership[]>([]);
@@ -41,7 +56,7 @@ function App() {
           includeTokens: false,
           // TODO: add delegate filter
         });
-
+        console.log('query ', query);
         if (query.data?.daos && shouldUpdate) {
           setDaoData(query.data.daos);
         }
@@ -64,29 +79,20 @@ function App() {
   }, [address, filterNetworks]);
 
   const isSm = useBreakpoint(widthQuery.sm);
-  console.log('isSm', isSm);
 
-  console.log('endpoints', ENDPOINTS);
-
-  const haus = Haus.create();
-  console.log('haus', haus);
-
-  console.log('dao data', daoData);
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <H1>Vite Starter</H1>
-      {/* <DaoHausNav /> */}
-      <H2>Sub Heading</H2>
-      <ParMd>Testing this out</ParMd>
-      <Button>Click me</Button>
+      <OuterLayout>
+        <SingleColumnLayout>
+          <H1>DAOhaus UI H1</H1>
+          <H2>H2</H2>
+          <ParMd>Paragraph text</ParMd>
+          <AddressDisplay address={address} />
+          <Button>Primary Button</Button>
+          <Button secondary>Secondary Button</Button>
+          <Button tertiary>Tertiary Button</Button>
+        </SingleColumnLayout>
+      </OuterLayout>
     </div>
   );
 }
